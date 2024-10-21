@@ -6,7 +6,7 @@ if (php_sapi_name() === 'cli-server' && is_file($filename)) {
     return false;
 }
 
-    // Include the Router class
+    // Include the Router classes
     // @note: it's recommended to just use the composer autoloader when working with other packages too
     require_once __DIR__ . '/src/Router/Router.php';
 

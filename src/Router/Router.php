@@ -469,7 +469,7 @@ class Router
             // Explode segments of given route
             list($controller, $method) = explode('@', $fn);
 
-            // Adjust controller class if namespace has been set
+            // Adjust controller classes if namespace has been set
             if ($this->getNamespace() !== '') {
                 $controller = $this->getNamespace() . '\\' . $controller;
             }
@@ -489,7 +489,7 @@ class Router
                     }
                 }
             } catch (\ReflectionException $reflectionException) {
-                // The controller class is not available or the class does not have the method $method
+                // The controller classes is not available or the classes does not have the method $method
             }
         }
     }
