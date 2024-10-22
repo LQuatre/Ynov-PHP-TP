@@ -1,10 +1,10 @@
 FROM php:fpm
 
 # Install necessary PHP extensions and tools
-RUN apt-get update && apt-get install -y \
-    zip unzip git \
+RUN apt-get update  \
+    && apt-get install -y zip unzip git \
     && docker-php-ext-install pdo pdo_mysql \
-    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
