@@ -123,16 +123,17 @@ function deleteMember($id) {
  */
 function configureRouter(\src\Router\Router $router): void {
     $config = getConfig();
+    $member = new Member();
     foreach ($config['views'] as $page) {
         foreach ($page['urlPath'] as $path) {
             if (in_array('GET', $page['method'])) {
-                $router->get($path, function () use ($page) {
+                $router->get($path, function () use ($page, $member) {
                     $page_title = $page['title'];
                     require_once __DIR__ . $page['route'];
                 });
             }
             if (in_array('POST', $page['method'])) {
-                $router->post($path, function () use ($page) {
+                $router->post($path, function () use ($page, $member) {
                     require_once __DIR__ . '/../views/' . $page['file'];
                 });
             }
@@ -155,10 +156,10 @@ function configure404Handler(\src\Router\Router $router): void {
 $thispage = pageGetCurrent();
 
 // Redirect to login if the page is protected and the user is not logged in
- if ($thispage['protected'] === true && !$member->isLogged()) {
-    header('Location: index.php?page=connexion');
+if ($thispage['protected'] === true && !$member->isLogged()) {
+    header('Location: /home');
     exit;
- }
+}
 
 // Set the page title
 $page_title = $thispage['title'];

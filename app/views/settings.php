@@ -1,10 +1,4 @@
 <?php
-require_once __DIR__ . '/../includes/classes/member.php';
-require_once __DIR__ . '/../includes/functions.php';
-
-use class\Member;
-
-$member = new Member();
 
 if (!$member->isLogged()) {
     header('Location: login.php');

@@ -28,6 +28,15 @@ return [
             'method' => ['GET', 'POST'],
             'protected' => false, // Il faut être connecté pour accéder à la page
         ],
+        'logout' => [
+            'file' => 'logout.php',
+            'urlPath' => ['/logout', '/deconnexion'],
+            'path' => '/../app/views/logout.php',
+            'route' => '/../views/logout.php',
+            'title' => 'Déconnexion',
+            'method' => ['GET'],
+            'protected' => true,
+        ],
         'register' => [
             'file' => 'signup.php',
             'urlPath' => ['/signup', '/inscription'],

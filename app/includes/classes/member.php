@@ -237,4 +237,18 @@ class Member
 
         return true;
     }
+
+    public  function logout(): void
+    {
+        // Supprimer les cookies
+        setcookie('member_id', '', time() - 3600, '/', '', false, true);
+        setcookie('member_hash', '', time() - 3600, '/', '', false, true);
+
+        // Supprimer la session
+        session_destroy();
+
+        // Rediriger vers la page de connexion
+        header('Location: /dashboard');
+        exit;
+    }
 }

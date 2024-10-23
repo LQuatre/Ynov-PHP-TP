@@ -34,8 +34,9 @@ $theme = isset($_COOKIE['theme']) ? $_COOKIE['theme'] : 'light'; // Récupérer 
                             tabindex="0"
                             class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
                         <li><a href="/home">Homepage</a></li>
-                        <?php if (isset($member) && $member): ?>
-                            <li><a href="/profile">Profile</a></li>
+                        <?php if ($member->isLogged()): ?>
+                            <li><a href="/dashboard">Dashboard</a></li>
+                            <li><a href="/logout">Logout</a></li>
                         <?php else: ?>
                             <li><a href="/login">Login</a></li>
                             <li><a href="/signup">SignUp</a></li>

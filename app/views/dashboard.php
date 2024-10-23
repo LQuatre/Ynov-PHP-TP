@@ -5,13 +5,6 @@ use class\Member;
 
 require_once __DIR__ . '/../includes/classes/member.php';
 require_once __DIR__ . '/../includes/functions.php';
-$member = new Member();
-
-if (!$member->isLogged()) {
-    // Redirect to login page if not logged in
-    header('Location: login.php');
-    exit;
-}
 
 // Get user information
 $username = $member->get('pseudo') ?: 'Guest'; // Fallback to 'Guest' if not set
