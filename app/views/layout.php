@@ -1,16 +1,19 @@
+<?php
+$theme = isset($_COOKIE['theme']) ? $_COOKIE['theme'] : 'light'; // Récupérer le thème du cookie
+?>
 <!DOCTYPE html>
 <html lang="en" data-theme="light"></html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $page_title ?></title>
-    <link rel="stylesheet" href="/assets/style.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.13/dist/full.min.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
     <header>
-        <div class="navbar bg-base-100">
+        <div class="navbar bg-base-100 absolute">
             <div class="navbar-start">
                 <div class="dropdown">
                     <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
@@ -30,19 +33,19 @@
                     <ul
                             tabindex="0"
                             class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-                        <li><a>Homepage</a></li>
+                        <li><a href="/home">Homepage</a></li>
                         <?php if (isset($member) && $member): ?>
                             <li><a href="/profile">Profile</a></li>
                         <?php else: ?>
                             <li><a href="/login">Login</a></li>
-                            <li><a href="/register">Register</a></li>
+                            <li><a href="/signup">SignUp</a></li>
                         <?php endif; ?>
                         <li><a>About</a></li>
                     </ul>
                 </div>
             </div>
             <div class="navbar-center">
-                <a class="btn btn-ghost text-xl">UrCV</a>
+                <a href="/home" class="btn btn-ghost text-xl">UrCV</a>
             </div>
             <div class="navbar-end">
                 <button class="btn btn-ghost btn-circle">
@@ -91,7 +94,7 @@
                         <path
                                 d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4" />
                     </svg>
-                    <input type="checkbox" value="dark" class="toggle theme-controller" />
+                    <input type="checkbox" value="dark" class="toggle theme-controller" <?= $theme === 'dark' ? 'checked' : '' ?> />
                     <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="20"
@@ -113,10 +116,7 @@
     </main>
     <footer class="footer footer-center bg-base-200 text-base-content rounded p-10">
         <nav class="grid grid-flow-col gap-4">
-<!--            <a class="link link-hover">About us</a>-->
             <a class="link link-hover">Contact</a>
-<!--            <a class="link link-hover">Jobs</a>-->
-<!--            <a class="link link-hover">Press kit</a>-->
         </nav>
         <nav>
             <div class="grid grid-flow-col gap-4">
@@ -159,5 +159,24 @@
             <p>&copy; <?= date('Y') ?> - All rights reserved by LQuatre</p>
         </aside>
     </footer>
+    <script>
+        // Fonction pour mettre à jour le cookie
+        function setCookie(name, value, days) {
+            let expires = "";
+            if (days) {
+                const date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                expires = "; expires=" + date.toUTCString();
+            }
+            document.cookie = name + "=" + (value || "") + expires + "; path=/";
+        }
+
+        // Écouter les changements sur le theme-controller
+        document.querySelector('.theme-controller').addEventListener('change', function() {
+            const theme = this.checked ? 'dark' : 'light'; // Déterminer le thème
+            setCookie('theme', theme, 30); // Sauvegarder le thème dans un cookie pour 30 jours
+            document.documentElement.setAttribute('data-theme', theme); // Appliquer le thème en temps réel
+        });
+    </script>
 </body>
 </html>

@@ -31,12 +31,12 @@ function createPdo(): PDO {
 
     try {
         $dsn = vsprintf('mysql:host=%s;port=%d;dbname=%s;charset=utf8', [
-            $config['db_host'],
-            $config['db_port'],
-            $config['db_name'],
+            $config['db']['db_host'],
+            $config['db']['db_port'],
+            $config['db']['db_name'],
         ]);
 
-        $pdo = new PDO($dsn, $config['db_user'], $config['db_pass'], [
+        $pdo = new PDO($dsn, $config['db']['db_user'], $config['db']['db_pass'], [
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
         ]);
@@ -58,8 +58,6 @@ function getPdo(): PDO {
     if (is_null($pdo)) {
         $pdo = createPdo();
     }
-
-    print_r($pdo);
 
     return $pdo;
 }
@@ -127,10 +125,17 @@ function configureRouter(\src\Router\Router $router): void {
     $config = getConfig();
     foreach ($config['views'] as $page) {
         foreach ($page['urlPath'] as $path) {
-            $router->get($path, function () use ($page) {
-                $page_title = $page['title'];
-                require_once __DIR__ . '/../views/layout.php';
-            });
+            if (in_array('GET', $page['method'])) {
+                $router->get($path, function () use ($page) {
+                    $page_title = $page['title'];
+                    require_once __DIR__ . $page['route'];
+                });
+            }
+            if (in_array('POST', $page['method'])) {
+                $router->post($path, function () use ($page) {
+                    require_once __DIR__ . '/../views/' . $page['file'];
+                });
+            }
         }
     }
 }
@@ -142,7 +147,7 @@ function configureRouter(\src\Router\Router $router): void {
  */
 function configure404Handler(\src\Router\Router $router): void {
     $router->set404(function () {
-        header('Location: http://127.0.0.1/404');
+        header('Location: /404');
     });
 }
 

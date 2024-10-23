@@ -109,7 +109,7 @@ class Member
     public static function createSession(array $infos): void
     {
         $_SESSION['id'] = $infos['id'];
-        $_SESSION['pseudo'] = $infos['pseudo'];
+        $_SESSION['pseudo'] = $infos['username'];
     }
 
     /**
@@ -124,9 +124,11 @@ class Member
         $duration = 60 * 60 * 24 * 30;
         $expiration = time() + $duration;
 
-        setcookie('member_id', $infos['id'], $expiration, null, null, false, true);
-        setcookie('member_hash', self::generateHash($infos), $expiration, null, null, false, true);
+        // Provide default values for path and domain
+        setcookie('member_id', $infos['id'], $expiration, '/', '', false, true);
+        setcookie('member_hash', self::generateHash($infos), $expiration, '/', '', false, true);
     }
+
 
     /**
      * Méthode statique qui à partir des infos d'un membre et d'un grain de sel
@@ -140,7 +142,7 @@ class Member
     protected static function generateHash(array $infos): string
     {
         // Explication : https://www.php.net/manual/fr/function.sha1.php
-        return sha1($infos['id'] . $infos['pseudo'] . self::$salt);
+        return sha1($infos['id'] . $infos['username'] . self::$salt);
     }
 
     /**
@@ -149,7 +151,7 @@ class Member
     protected function getFromSession(): void
     {
         // Les variables de session existent
-        if (! empty($_SESSION['id']) && ! empty($_SESSION['pseudo'])) {
+        if (! empty($_SESSION['id']) && ! empty($_SESSION['username'])) {
             $query = getPdo()->prepare('SELECT * FROM membres WHERE id = :id LIMIT 1');
             $success = $query->execute(['id' => $_SESSION['id']]);
 
@@ -181,5 +183,58 @@ class Member
                 $this->logged = true;
             }
         }
+    }
+
+    public function register($email, $username, $password): bool|string
+    {
+        // Vérifier si l'email ou le nom d'utilisateur existe déjà
+        $query = getPdo()->prepare("SELECT * FROM membres WHERE email = :email OR username = :username");
+        $query->execute(['email' => $email, 'username' => $username]);
+        if ($query->rowCount() > 0) {
+            return "Cet email ou nom d'utilisateur est déjà utilisé.";
+        }
+
+        // Hasher le mot de passe
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+        // Insérer le nouvel utilisateur
+        $query = getPdo()->prepare("INSERT INTO membres (email, username, password) VALUES (:email, :username, :password)");
+        $result = $query->execute([
+            'email' => $email,
+            'username' => $username,
+            'password' => $hashedPassword
+        ]);
+
+        if ($result) {
+            return true;
+        } else {
+            return "Une erreur est survenue lors de l'inscription.";
+        }
+    }
+
+    public function login($email, $password): bool|string
+    {
+        // Récupérer l'utilisateur par son email
+        $query = getPdo()->prepare("SELECT * FROM membres WHERE email = :email");
+        $query->execute(['email' => $email]);
+        $member = $query->fetch();
+
+        // Vérifier si l'utilisateur existe
+        if ($member === false) {
+            return "Cet email n'existe pas.";
+        }
+
+        // Vérifier le mot de passe
+        if (!password_verify($password, $member['password'])) {
+            return "Le mot de passe est incorrect.";
+        }
+
+        // Créer la session
+        self::createSession($member);
+
+        // Créer les cookies de connexion automatique
+        self::createCookie($member);
+
+        return true;
     }
 }
