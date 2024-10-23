@@ -15,24 +15,26 @@ $theme = isset($_COOKIE['theme']) ? $_COOKIE['theme'] : 'light'; // Récupérer 
     <header>
         <div class="navbar bg-base-100 absolute">
             <div class="navbar-start">
-                <div class="dropdown">
-                    <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
+                <!-- Dropdown for mobile (hidden on larger screens) -->
+                <div class="lg:hidden">
+                    <div class="dropdown">
+<div tabindex="0" role="button" class="btn btn-ghost btn-circle">
                         <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                class="h-5 w-5"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor">
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="h-5 w-5"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor">
                             <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M4 6h16M4 12h16M4 18h7" />
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h7" />
                         </svg>
                     </div>
                     <ul
-                            tabindex="0"
-                            class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
+                        tabindex="0"
+                        class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
                         <li><a href="/home">Homepage</a></li>
                         <?php if ($member->isLogged()): ?>
                             <li><a href="/dashboard">Dashboard</a></li>
@@ -41,45 +43,72 @@ $theme = isset($_COOKIE['theme']) ? $_COOKIE['theme'] : 'light'; // Récupérer 
                             <li><a href="/login">Login</a></li>
                             <li><a href="/signup">SignUp</a></li>
                         <?php endif; ?>
-                        <li><a>About</a></li>
+                        <li><a href="/about">About</a></li>
                     </ul>
+                    </div>
                 </div>
+                <script>
+                    // Cacher le dropdown si lg screen
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const dropdown = document.querySelector('.dropdown');
+                        if (window.matchMedia('(min-width: 1024px)').matches) {
+                            dropdown.classList.add('hidden');
+                        }
+                    });
+                </script>
+
+                <!-- Navbar for desktop (hidden on smaller screens) -->
+                <nav class="hidden lg:flex justify-between items-center bg-base-100">
+                    <div class="flex space-x-4">
+                        <a href="/home" class="btn btn-ghost">Homepage</a>
+                        <a href="/about" class="btn btn-ghost">About</a>
+                    </div>
+                    <div>
+                        <?php if ($member->isLogged()): ?>
+                            <a href="/dashboard" class="btn btn-ghost">Dashboard</a>
+                            <a href="/logout" class="btn btn-ghost">Logout</a>
+                        <?php else: ?>
+                            <a href="/login" class="btn btn-ghost">Login</a>
+                            <a href="/signup" class="btn btn-ghost">SignUp</a>
+                        <?php endif; ?>
+                    </div>
+                </nav>
             </div>
             <div class="navbar-center">
                 <a href="/home" class="btn btn-ghost text-xl">UrCV</a>
             </div>
             <div class="navbar-end">
-                <button class="btn btn-ghost btn-circle">
-                    <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            class="h-5 w-5"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor">
-                        <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                </button>
-                <button class="btn btn-ghost btn-circle">
-                    <div class="indicator">
-                        <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                class="h-5 w-5"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor">
-                            <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                        </svg>
-                        <span class="badge badge-xs badge-primary indicator-item"></span>
-                    </div>
-                </button>
+<!--                <button class="btn btn-ghost btn-circle">-->
+<!--                    <svg-->
+<!--                            xmlns="http://www.w3.org/2000/svg"-->
+<!--                            class="h-5 w-5"-->
+<!--                            fill="none"-->
+<!--                            viewBox="0 0 24 24"-->
+<!--                            stroke="currentColor">-->
+<!--                        <path-->
+<!--                                stroke-linecap="round"-->
+<!--                                stroke-linejoin="round"-->
+<!--                                stroke-width="2"-->
+<!--                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />-->
+<!--                    </svg>-->
+<!--                </button>-->
+<!--                <button class="btn btn-ghost btn-circle">-->
+<!--                    <div class="indicator">-->
+<!--                        <svg-->
+<!--                                xmlns="http://www.w3.org/2000/svg"-->
+<!--                                class="h-5 w-5"-->
+<!--                                fill="none"-->
+<!--                                viewBox="0 0 24 24"-->
+<!--                                stroke="currentColor">-->
+<!--                            <path-->
+<!--                                    stroke-linecap="round"-->
+<!--                                    stroke-linejoin="round"-->
+<!--                                    stroke-width="2"-->
+<!--                                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />-->
+<!--                        </svg>-->
+<!--                        <span class="badge badge-xs badge-primary indicator-item"></span>-->
+<!--                    </div>-->
+<!--                </button>-->
                 <label class="flex cursor-pointer gap-2">
                     <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -117,7 +146,7 @@ $theme = isset($_COOKIE['theme']) ? $_COOKIE['theme'] : 'light'; // Récupérer 
     </main>
     <footer class="footer footer-center bg-base-200 text-base-content rounded p-10">
         <nav class="grid grid-flow-col gap-4">
-            <a class="link link-hover">Contact</a>
+            <a href="contact" class="link link-hover">Contact</a>
         </nav>
         <nav>
             <div class="grid grid-flow-col gap-4">

@@ -18,6 +18,8 @@ return [
             'title' => 'Accueil',
             'method' => ['GET', 'POST'],
             'protected' => false,
+            'needToBeAdmin' => false,
+            'params' => []
         ],
         'login' => [
             'file' => 'login.php',
@@ -26,7 +28,9 @@ return [
             'route' => '/../views/layout.php',
             'title' => 'Connexion',
             'method' => ['GET', 'POST'],
-            'protected' => false, // Il faut être connecté pour accéder à la page
+            'protected' => false,
+            'needToBeAdmin' => false,
+            'params' => []
         ],
         'logout' => [
             'file' => 'logout.php',
@@ -36,6 +40,8 @@ return [
             'title' => 'Déconnexion',
             'method' => ['GET'],
             'protected' => true,
+            'needToBeAdmin' => false,
+            'params' => []
         ],
         'register' => [
             'file' => 'signup.php',
@@ -45,6 +51,8 @@ return [
             'title' => 'Inscription',
             'method' => ['GET', 'POST'],
             'protected' => false,
+            'needToBeAdmin' => false,
+            'params' => []
         ],
         'cv' => [
             'file' => 'cv.php',
@@ -53,7 +61,31 @@ return [
             'route' => '/../views/layout.php',
             'title' => 'CV',
             'method' => ['GET'],
-            'protected' => false,
+            'protected' => true,
+            'needToBeAdmin' => false,
+            'params' => []
+        ],
+        '/cv/(\d+)'=> [
+            'file' => 'cv_detail.php',
+            'urlPath' => ['/cv/(\d+)'],
+            'path' => '/../app/views/cv_detail.php',
+            'route' => '/../views/layout.php',
+            'title' => 'Détails du CV',
+            'method' => ['GET'],
+            'protected' => true,
+            'needToBeAdmin' => false,
+            'params' => ['id']
+        ],
+        'cv/download/' => [
+            'file' => 'cv_download.php',
+            'urlPath' => ['/cv/download'],
+            'path' => '/../app/views/cv_download.php',
+            'route' => '/../views/layout.php',
+            'title' => 'Télécharger un CV',
+            'method' => ['POST'],
+            'protected' => true,
+            'needToBeAdmin' => false,
+            'params' => []
         ],
         'cv/create' => [
             'file' => 'cv_create.php',
@@ -63,6 +95,8 @@ return [
             'title' => 'Créer un CV',
             'method' => ['GET', 'POST'],
             'protected' => true,
+            'needToBeAdmin' => false,
+            'params' => []
         ],
         'cv/edit' => [
             'file' => 'cv_edit.php',
@@ -72,15 +106,19 @@ return [
             'title' => 'Editer un CV',
             'method' => ['GET', 'POST'],
             'protected' => true,
+            'needToBeAdmin' => false,
+            'params' => []
         ],
-        'cv/delete' => [
+        'cv/delete/(\d+)' => [
             'file' => 'cv_delete.php',
-            'urlPath' => ['/cv/delete', '/cv/supprimer'],
+            'urlPath' => ['/cv/delete/(\d+)'],
             'path' => '/../app/views/cv_delete.php',
             'route' => '/../views/layout.php',
             'title' => 'Supprimer un CV',
-            'method' => ['GET', 'POST'],
+            'method' => ['GET'],
             'protected' => true,
+            'needToBeAdmin' => false,
+            'params' => ['id']
         ],
         'dashboard' => [
             'file' => 'dashboard.php',
@@ -90,6 +128,8 @@ return [
             'title' => 'Tableau de bord',
             'method' => ['GET'],
             'protected' => true,
+            'needToBeAdmin' => false,
+            'params' => []
         ],
         'profile' => [
             'file' => 'profile.php',
@@ -99,6 +139,8 @@ return [
             'title' => 'Profil',
             'method' => ['GET'],
             'protected' => true,
+            'needToBeAdmin' => false,
+            'params' => []
         ],
         'settings' => [
             'file' => 'settings.php',
@@ -108,6 +150,8 @@ return [
             'title' => 'Paramètres',
             'method' => ['GET', 'POST'],
             'protected' => true,
+            'needToBeAdmin' => false,
+            'params' => []
         ],
         'activity' => [
             'file' => 'activity.php',
@@ -117,6 +161,52 @@ return [
             'title' => 'Activité',
             'method' => ['GET'],
             'protected' => true,
+            'needToBeAdmin' => false,
+            'params' => []
+        ],
+        'about' => [
+            'file' => 'about.php',
+            'urlPath' => ['/about', '/a-propos'],
+            'path' => '/../app/views/about.php',
+            'route' => '/../views/layout.php',
+            'title' => 'À propos',
+            'method' => ['GET'],
+            'protected' => false,
+            'needToBeAdmin' => false,
+            'params' => []
+        ],
+        'contact' => [
+            'file' => 'contact.php',
+            'urlPath' => ['/contact'],
+            'path' => '/../app/views/contact.php',
+            'route' => '/../views/layout.php',
+            'title' => 'Contact',
+            'method' => ['GET', 'POST'],
+            'protected' => false,
+            'needToBeAdmin' => false,
+            'params' => []
+        ],
+        'admin' => [
+            'file' => 'admin.php',
+            'urlPath' => ['/admin'],
+            'path' => '/../app/views/admin.php',
+            'route' => '/../views/layout.php',
+            'title' => 'Admin',
+            'method' => ['GET'],
+            'protected' => true,
+            'needToBeAdmin' => true,
+            'params' => []
+        ],
+        'rickroll' => [
+            'file' => 'rick.php',
+            'urlPath' => ['/rickroll'],
+            'path' => '/../app/views/rickroll.php',
+            'route' => '/../views/layout.php',
+            'title' => 'Rickroll',
+            'method' => ['GET'],
+            'protected' => false,
+            'needToBeAdmin' => false,
+            'params' => []
         ],
         '404' => [
             'file' => '404.php',
@@ -126,6 +216,8 @@ return [
             'title' => 'Page non trouvée',
             'method' => ['GET'],
             'protected' => false,
+            'needToBeAdmin' => false,
+            'params' => []
         ]
     ]
 ];

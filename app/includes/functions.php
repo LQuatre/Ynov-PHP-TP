@@ -1,6 +1,8 @@
 <?php
+require('/app/includes/classes/pdfcontroller.php');
 
 // Start PHP session
+use class\FPDFController;
 use class\Member;
 
 session_start();
@@ -124,16 +126,22 @@ function deleteMember($id) {
 function configureRouter(\src\Router\Router $router): void {
     $config = getConfig();
     $member = new Member();
+    $pdfController = new FPDFController();
     foreach ($config['views'] as $page) {
         foreach ($page['urlPath'] as $path) {
             if (in_array('GET', $page['method'])) {
-                $router->get($path, function () use ($page, $member) {
+                $router->get($path, function ($id = null) use ($page, $member, $pdfController) {
                     $page_title = $page['title'];
+                    if (!empty($page['params'])) {
+                        foreach ($page['params'] as $param) {
+                            $$param = $id;
+                        }
+                    }
                     require_once __DIR__ . $page['route'];
                 });
             }
             if (in_array('POST', $page['method'])) {
-                $router->post($path, function () use ($page, $member) {
+                $router->post($path, function () use ($page, $member, $pdfController) {
                     require_once __DIR__ . '/../views/' . $page['file'];
                 });
             }
@@ -157,9 +165,13 @@ $thispage = pageGetCurrent();
 
 // Redirect to login if the page is protected and the user is not logged in
 if ($thispage['protected'] === true && !$member->isLogged()) {
-    header('Location: /home');
-    exit;
+    header('Location: /login');
+//    exit;
 }
+
+if ($thispage['needToBeAdmin'] === true && !$member->isAdmin()) {
+    header('Location: /rickroll');
+}   
 
 // Set the page title
 $page_title = $thispage['title'];

@@ -14,18 +14,20 @@ $activities = [
 
 ?>
 
-<div class="container mx-auto p-4">
-    <h1 class="text-2xl font-bold mb-4">Recent Activity</h1>
-    <div class="card bg-base-100 shadow-md p-4">
-        <h2 class="text-xl font-semibold">Your Activity</h2>
-        <ul>
-            <?php if (empty($activities)): ?>
-                <li>No recent activity found.</li>
-            <?php else: ?>
-                <?php foreach ($activities as $activity): ?>
-                    <li><?= htmlspecialchars($activity) ?></li>
-                <?php endforeach; ?>
-            <?php endif; ?>
-        </ul>
+<div class="min-h-screen bg-base-200 flex flex-col items-center">
+    <div class="w-full max-w-md mt-4 px-4">
+        <div class="card w-full pt-12">
+            <div class="card-body">
+                <h1 class="text-xl font-bold text-center">Activity Log</h1>
+                <div class="grid grid-cols-1 gap-4">
+                    <?php foreach ($activities as $activity) : ?>
+                        <div class="card">
+                            <div class="card-body">
+                                <p class="text-sm"><?= $activity ?></p>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
     </div>
-</div>

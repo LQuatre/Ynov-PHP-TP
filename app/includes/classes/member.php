@@ -23,12 +23,21 @@ class Member
      */
     private $logged = false;
 
+        /**
+     * Le visiteur est administrateur. Par défaut, non
+     * 
+     * @var bool
+     */
+    private $admin = false;
+
     /**
      * Informations sur le membre connecté
      *
      * @var array
      */
     private $member = [];
+
+    public mixed $cvs;
 
     public function __construct()
     {
@@ -37,6 +46,10 @@ class Member
 
         // Tente de récupérer le membre par les COOKIES
         $this->getFromCookie();
+
+        if ($this->isLogged()) {
+            $this->getCVs($this->member['id']);
+        }
     }
 
     /**
@@ -47,6 +60,11 @@ class Member
     public function isLogged(): bool
     {
         return $this->logged;
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->get('role') === 'admin';
     }
 
     /**
@@ -64,6 +82,18 @@ class Member
         return null;
     }
 
+    public function update($username, $email, $firstname, $lastname): void
+    {
+        $query = getPdo()->prepare('UPDATE users SET email = :email, username = :username, firstname = :firstname, lastname = :lastname WHERE id = :id');
+        $query->execute([
+            'email' => $email,
+            'username' => $username,
+            'firstname' => $firstname,
+            'lastname' => $lastname,
+            'id' => $this->get('id')
+        ]);
+    }
+
     /**
      * Méthode statique permettant de vérifier si un pseudo est déjà utilisé
      *
@@ -72,7 +102,7 @@ class Member
      */
     public static function pseudoIsAlreadyTaken(string $pseudo): bool
     {
-        $query = getPdo()->prepare('SELECT * FROM membres WHERE pseudo = :pseudo LIMIT 1');
+        $query = getPdo()->prepare('SELECT * FROM users WHERE pseudo = :pseudo LIMIT 1');
         $query->execute(['pseudo' => $pseudo]);
 
         return $query->fetch() !== false;
@@ -80,7 +110,7 @@ class Member
 
     public static function crediIsAlreadyTaken(string $credits): bool
     {
-        $query = getPdo()->prepare('SELECT * FROM membres WHERE credits = :credits LIMIT 100');
+        $query = getPdo()->prepare('SELECT * FROM users WHERE credits = :credits LIMIT 100');
         $query->execute(['credits' => $credits]);
 
         return $query->fetch() !== false;
@@ -94,7 +124,7 @@ class Member
      */
     public static function emailIsAlreadyTaken(string $email): bool
     {
-        $query = getPdo()->prepare('SELECT * FROM membres WHERE email = :email LIMIT 1');
+        $query = getPdo()->prepare('SELECT * FROM users WHERE email = :email LIMIT 1');
         $query->execute(['email' => $email]);
 
         return $query->fetch() !== false;
@@ -152,7 +182,7 @@ class Member
     {
         // Les variables de session existent
         if (! empty($_SESSION['id']) && ! empty($_SESSION['username'])) {
-            $query = getPdo()->prepare('SELECT * FROM membres WHERE id = :id LIMIT 1');
+            $query = getPdo()->prepare('SELECT * FROM users WHERE id = :id LIMIT 1');
             $success = $query->execute(['id' => $_SESSION['id']]);
 
             // Le membre existe en BDD
@@ -173,7 +203,7 @@ class Member
 
         // L'ID et le Hash existent dans les cookies
         if (! empty($id) && ! empty($hash)) {
-            $query = getPdo()->prepare('SELECT * FROM membres WHERE id = :id LIMIT 1');
+            $query = getPdo()->prepare('SELECT * FROM users WHERE id = :id LIMIT 1');
             $success = $query->execute(['id' => $id]);
             $member = $query->fetch();
 
@@ -185,12 +215,18 @@ class Member
         }
     }
 
+    private function getCVs($id): void
+    {
+        $query = getPdo()->prepare('SELECT * FROM cvs WHERE user_id = :user_id');
+        $query->execute(['user_id' => $id]);
+        $this->cvs = $query->fetchAll();
+    }
+
     public function register($email, $username, $password): bool|string
     {
         // Vérifier si l'email ou le nom d'utilisateur existe déjà
-        $query = getPdo()->prepare("SELECT * FROM membres WHERE email = :email OR username = :username");
-        $query->execute(['email' => $email, 'username' => $username]);
-        if ($query->rowCount() > 0) {
+        $emailTaken = $this->emailIsAlreadyTaken($email);
+        if ($emailTaken == true) {
             return "Cet email ou nom d'utilisateur est déjà utilisé.";
         }
 
@@ -198,13 +234,12 @@ class Member
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
         // Insérer le nouvel utilisateur
-        $query = getPdo()->prepare("INSERT INTO membres (email, username, password) VALUES (:email, :username, :password)");
+        $query = getPdo()->prepare("INSERT INTO users (email, username, password) VALUES (:email, :username, :password)");
         $result = $query->execute([
-            'email' => $email,
-            'username' => $username,
-            'password' => $hashedPassword
+            ':email' => $email,
+            ':username' => $username,
+            ':password' => $hashedPassword
         ]);
-
         if ($result) {
             return true;
         } else {
@@ -212,10 +247,43 @@ class Member
         }
     }
 
+    public function handleRegister($page, $member): void
+    {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $email = $_POST['email'] ?? '';
+            $username = $_POST['username'] ?? '';
+            $password = $_POST['password'] ?? '';
+            $confirm_password = $_POST['confirm_password'] ?? '';
+
+            // Validation simple
+            if (empty($email) || empty($username) || empty($password) || empty($confirm_password)) {
+                $error = "Tous les champs sont requis.";
+                header('Location: /signup?error=' . $error);
+            } elseif ($password !== $confirm_password) {
+                $error = "Les mots de passe ne correspondent pas.";
+                header('Location: /signup?error=' . $error);
+            } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $error = "Format d'email invalide.";
+                header('Location: /signup?error=' . $error);
+            } else {
+                // Tentative d'inscription
+                $result = $this->register($email, $username, $password);
+                if ($result === true) {
+                    // Redirection vers la page de connexion ou accueil
+                    header('Location: /login');
+                    exit;
+                } else {
+                    $error = $result; // Le message d'erreur retourné par la méthode register
+                    header('Location: /signup?error=' . $error);
+                }
+            }
+        }
+    }
+
     public function login($email, $password): bool|string
     {
         // Récupérer l'utilisateur par son email
-        $query = getPdo()->prepare("SELECT * FROM membres WHERE email = :email");
+        $query = getPdo()->prepare("SELECT * FROM users WHERE (username=:email OR email=:email)");
         $query->execute(['email' => $email]);
         $member = $query->fetch();
 
@@ -237,18 +305,97 @@ class Member
 
         return true;
     }
-
-    public  function logout(): void
+    public function handleLogin($page, $member)
     {
-        // Supprimer les cookies
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+            $email = $_POST['email'] ?? '';
+            $password = $_POST['password'] ?? '';
+
+            // Validate input
+            if (empty($email) || empty($password)) {
+                $error = "Veuillez remplir tous les champs.";
+                
+            }
+
+            // Attempt to login
+            $result = $this->login($email, $password);
+
+            // Handle login result
+            if ($result === true) {
+                header('Location: /dashboard');
+                exit;
+            } else {
+                $error = $result; // Le message d'erreur retourné par la méthode register
+                header('Location: /login?error=' . $error);
+            }
+        }
+    }
+
+    public function logout(): void
+    {
+        // Remove cookies
         setcookie('member_id', '', time() - 3600, '/', '', false, true);
         setcookie('member_hash', '', time() - 3600, '/', '', false, true);
 
-        // Supprimer la session
+        // Destroy the session
         session_destroy();
 
-        // Rediriger vers la page de connexion
-        header('Location: /dashboard');
+        // Redirect to the login page
+        header('Location: /home');
         exit;
+    }
+
+    public function newCv($user_id, $email, $phone, $address, $education, $experience, $skills): bool|string
+    {
+        // Insert the new CV
+        $query = getPdo()->prepare("INSERT INTO cvs (user_id, email, phone, address, education, experience, skills) VALUES (:user_id, :email, :phone, :address, :education, :experience, :skills)");
+        $result = $query->execute([
+            ':user_id' => $user_id,
+            ':email' => $email,
+            ':phone' => $phone,
+            ':address' => $address,
+            ':education' => $education,
+            ':experience' => $experience,
+            ':skills' => $skills
+        ]);
+        if ($result) {
+            return true;
+        } else {
+            return "Une erreur est survenue lors de la création du CV.";
+        }
+    }
+
+    public function handleNewCv($page, $member): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $user_id = $this->get('id');
+            $email = $_POST['email'] ?? '';
+            $phone = $_POST['phone'] ?? '';
+            $address = $_POST['address'] ?? '';
+            $education = $_POST['education'] ?? '';
+            $experience = $_POST['experience'] ?? '';
+            $skills = $_POST['skills'] ?? '';
+
+            // Validate input
+            if (empty($user_id) || !filter_var($email, FILTER_VALIDATE_EMAIL) || !preg_match('/^\+?[0-9\s\-]+$/', $phone) || empty($address) || empty($education) || empty($experience) || empty($skills)) {
+                $error = "Veuillez remplir tous les champs correctement.";
+                
+                return;
+            }
+
+            // Attempt to create the CV
+            $result = $this->newCv($user_id, $email, $phone, $address, $education, $experience, $skills);
+
+            // Handle CV creation result
+            if ($result === true) {
+                header('Location: /dashboard');
+                exit;
+            } else {
+                print_r($result);
+                $error = $result; // Le message d'erreur retourné par la méthode register
+                header('Location: /cv/create?error=' . $error);
+            }
+        }
     }
 }
