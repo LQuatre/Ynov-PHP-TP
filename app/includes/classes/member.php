@@ -38,6 +38,7 @@ class Member
     private $member = [];
 
     public mixed $cvs;
+    public mixed $projects;
 
     public function __construct()
     {
@@ -49,6 +50,7 @@ class Member
 
         if ($this->isLogged()) {
             $this->getCVs($this->member['id']);
+            $this->getProjects($this->member['id']);
         }
     }
 
@@ -220,6 +222,13 @@ class Member
         $query = getPdo()->prepare('SELECT * FROM cvs WHERE user_id = :user_id');
         $query->execute(['user_id' => $id]);
         $this->cvs = $query->fetchAll();
+    }
+
+    private function getProjects($id): void
+    {
+        $query = getPdo()->prepare('SELECT * FROM projects WHERE user_id = :user_id');
+        $query->execute(['user_id' => $id]);
+        $this->projects = $query->fetchAll();
     }
 
     public function register($email, $username, $password): bool|string

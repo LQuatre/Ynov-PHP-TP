@@ -75,7 +75,7 @@ $theme = isset($_COOKIE['theme']) ? $_COOKIE['theme'] : 'light'; // Récupérer 
                 </nav>
             </div>
             <div class="navbar-center">
-                <a href="/home" class="btn btn-ghost text-xl">UrCV</a>
+                <a href="/home" class="btn btn-ghost text-xl">UrPlatform</a>
             </div>
             <div class="navbar-end">
 <!--                <button class="btn btn-ghost btn-circle">-->
@@ -142,7 +142,7 @@ $theme = isset($_COOKIE['theme']) ? $_COOKIE['theme'] : 'light'; // Récupérer 
         </div>
     </header>
     <main>
-        <?php require_once __DIR__ . '/' . $page['file']; ?>
+        <?php require_once __DIR__ . $page['path']; ?>
     </main>
     <footer class="footer footer-center bg-base-200 text-base-content rounded p-10">
         <nav class="grid grid-flow-col gap-4">

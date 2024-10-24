@@ -9,12 +9,12 @@ if (!$member->isLogged()) {
     <div class="w-full max-w-md mt-4 px-4">
         <div class="card w-full pt-12">
             <div class="card-body">
-                <h1 class="text-xl font-bold text-center">Vos CVs</h1>
+                <h1 class="text-xl font-bold text-center">Ur CVs</h1>
                 <div class="grid grid-cols-1 gap-4">
                     <?php foreach ($member->cvs as $cv) : ?>
                         <div class="card bg-base-100 shadow-md ">
                             <div class="card-body">
-                                <h2 class="text-lg font-bold"><?php echo $member->get('firstname') . ' ' . $member->get('lastname'); ?></h2>
+                                <h2 class="text-lg font-bold"><?php echo $member->get('firstname') . ' cv.php' . $member->get('lastname'); ?></h2>
                                 <p class="text-sm"><?php echo $cv['email']; ?></p>
                                 <p class="text-sm"><?php echo $cv['phone']; ?></p>
                                 <p class="text-sm"><?php echo $cv['address']; ?></p>

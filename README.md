@@ -35,7 +35,7 @@ Ce projet est une application web qui permet aux utilisateurs de créer et de t�
 
 ## Utilisation
 
-1. Accédez à l'application via `http://localhost:8000`.
+1. Accédez à l'application via `http://localhost`.
 2. Cliquez sur le bouton \`Create your CV\` pour commencer à créer votre CV.
 3. Remplissez les informations nécessaires et téléchargez votre CV au format PDF.
 
@@ -50,6 +50,9 @@ Ce projet est une application web qui permet aux utilisateurs de créer et de t�
 | Field | Type | Description |
 | --- | --- | --- |
 | id | int | Identifiant unique de l'utilisateur |
+| firstname | string | Prénom de l'utilisateur |
+| lastname | string | Nom de l'utilisateur |
+| username | string | Nom d'utilisateur de l'utilisateur |j
 | email | string | Adresse email de l'utilisateur |
 | password | string | Mot de passe de l'utilisateur |
 | created_at | datetime | Date de création de l'utilisateur |
@@ -62,7 +65,9 @@ Ce projet est une application web qui permet aux utilisateurs de créer et de t�
 | user_id | int | Identifiant de l'utilisateur associé au CV |
 | title | string | Titre du CV |
 | description | string | Description du CV |
-| created_at | datetime | Date de création du CV |
+| skills | string | Compétences du CV |
+| experience | string | Expérience du CV |
+| education | string | Éducation du CV |
 
 ### Project
 

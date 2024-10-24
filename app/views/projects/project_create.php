@@ -13,28 +13,28 @@ $member->handleNewProject($page, $member);
     <div class="w-full max-w-md mt-4 px-4">
         <div class="card w-full pt-12">
             <div class="card-body">
-                <h1 class="text-xl font-bold text-center">Créez Votre CV</h1>
+                <h1 class="text-xl font-bold text-center">Créez Votre Projet</h1>
                 <form action="" method="post" class="grid grid-cols-2 gap-4">
                     <div class="form-control col-span-2 sm:col-span-1">
                         <label class="label py-1" for="lastname">
-                            <span class="label-text">Nom</span>
+                            <span class="label-text">Name</span>
                         </label>
                         <input type="text" id="lastname" name="lastname" class="input input-bordered w-full max-w-xs" value="<?php echo htmlspecialchars($member->get('lastname')); ?>" disabled />
                     </div>
                     <div class="form-control col-span-2 sm:col-span-1">
                         <label class="label py-1" for="firstname">
-                            <span class="label-text">Prénom</span>
+                            <span class="label-text">Firstname</span>
                         </label>
                         <input type="text" id="firstname" name="firstname" class="input input-bordered w-full max-w-xs" value="<?php echo htmlspecialchars($member->get('firstname')); ?>" disabled />
                     </div>
 
                     <div class="form-control col-span-2 text-center">
-                        <h1>Si vous voulez changer votre nom ou prénom, c'est dans votre <a href="/profile" class="text-blue-600 hover:text-blue-800 hover:underline">profil</a></h1>
+                        <h1>If you want to change your last name or first name, you can do so in your <a href="/profile" class="text-blue-600 hover:text-blue-800 hover:underline">profile</a></h1>
                     </div>
 
                     <div class="form-control col-span-2">
                         <label class="label py-1" for="title">
-                            <span class="label-text">Titre</span>
+                            <span class="label-text">Title</span>
                         </label>
                         <input type="text" id="title" name="title" class="input input-bordered input-sm" required>
                     </div>
@@ -48,7 +48,7 @@ $member->handleNewProject($page, $member);
 
                     <div class="form-control col-span-2">
                         <label class="label py-1" for="link">
-                            <span class="label-text">Lien</span>
+                            <span class="label-text">Link</span>
                         </label>
                         <input type="text" id="link" name="link" class="input input-bordered input-sm" required>
                     </div>
@@ -61,7 +61,7 @@ $member->handleNewProject($page, $member);
                     </div>
 
                     <div class="form-control col-span-2">
-                        <button type="submit" class="btn btn-primary w-full">Créer</button>
+                        <button type="submit" class="btn btn-primary w-full">Create</button>
                     </div>
                 </form>
             </div>

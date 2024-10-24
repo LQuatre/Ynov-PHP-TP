@@ -5,7 +5,7 @@
             <p class="py-6">
                 Welcome to our website. Here you can create your CV and download it as a PDF.
             </p>
-            <button class="btn btn-primary" onclick="window.location.href='/cv/create'">Create your CV</button>
+            <button class="btn btn-primary" onclick="window.location.href='/dashboard.php'">Create your CV</button>
         </div>
     </div>
 </div>

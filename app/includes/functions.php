@@ -142,7 +142,7 @@ function configureRouter(\src\Router\Router $router): void {
             }
             if (in_array('POST', $page['method'])) {
                 $router->post($path, function () use ($page, $member, $pdfController) {
-                    require_once __DIR__ . '/../views/' . $page['file'];
+                    require_once __DIR__ . $page['path'];
                 });
             }
         }

@@ -17,19 +17,19 @@ $member->handleNewCv($page, $member);
                 <form action="" method="post" class="grid grid-cols-2 gap-4">
                     <div class="form-control col-span-2 sm:col-span-1">
                         <label class="label py-1" for="lastname">
-                            <span class="label-text">Nom</span>
+                            <span class="label-text">Name</span>
                         </label>
                         <input type="text" id="lastname" name="lastname" class="input input-bordered w-full max-w-xs" value="<?php echo htmlspecialchars($member->get('lastname')); ?>" disabled />
                     </div>
                     <div class="form-control col-span-2 sm:col-span-1">
                         <label class="label py-1" for="firstname">
-                            <span class="label-text">Prénom</span>
+                            <span class="label-text">Firstname</span>
                         </label>
                         <input type="text" id="firstname" name="firstname" class="input input-bordered w-full max-w-xs" value="<?php echo htmlspecialchars($member->get('firstname')); ?>" disabled />
                     </div>
                      
                     <div class="form-control col-span-2 text-center">
-                        <h1>Si vous voulez changer votre nom ou prénom, c'est dans votre <a href="/profile" class="text-blue-600 hover:text-blue-800 hover:underline">profil</a></h1>
+                        <h1>If you want to change your last name or first name, you can do so in your <a href="/profile" class="text-blue-600 hover:text-blue-800 hover:underline">profile</a></h1>
                     </div>
 
                     <div class="form-control col-span-2 sm:col-span-1">
@@ -41,41 +41,41 @@ $member->handleNewCv($page, $member);
 
                     <div class="form-control col-span-2 sm:col-span-1">
                         <label class="label py-1" for="phone">
-                            <span class="label-text">Téléphone</span>
+                            <span class="label-text">Phone</span>
                         </label>
                         <input type="tel" id="phone" name="phone" class="input input-bordered input-sm" required>
                     </div>
 
                     <div class="form-control col-span-2">
                         <label class="label py-1" for="address">
-                            <span class="label-text">Adresse</span>
+                            <span class="label-text">Adress</span>
                         </label>
                         <input type="text" id="address" name="address" class="input input-bordered input-sm" required>
                     </div>
 
                     <div class="form-control col-span-2">
                         <label class="label py-1" for="education">
-                            <span class="label-text">Formation</span>
+                            <span class="label-text">Education</span>
                         </label>
                         <textarea id="education" name="education" class="textarea textarea-bordered textarea-sm" rows="2" required></textarea>
                     </div>
 
                     <div class="form-control col-span-2">
                         <label class="label py-1" for="experience">
-                            <span class="label-text">Expérience</span>
+                            <span class="label-text">Experience</span>
                         </label>
                         <textarea id="experience" name="experience" class="textarea textarea-bordered textarea-sm" rows="2" required></textarea>
                     </div>
 
                     <div class="form-control col-span-2">
                         <label class="label py-1" for="skills">
-                            <span class="label-text">Compétences</span>
+                            <span class="label-text">Skills</span>
                         </label>
                         <textarea id="skills" name="skills" class="textarea textarea-bordered textarea-sm" rows="2" required></textarea>
                     </div>
 
                     <div class="form-control col-span-2 mt-4">
-                        <button type="submit" class="btn btn-primary btn-sm w-full">Soumettre</button>
+                        <button type="submit" class="btn btn-primary btn-sm w-full">Create</button>
                     </div>
                 </form>
             </div>
