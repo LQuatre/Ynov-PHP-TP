@@ -120,6 +120,61 @@ return [
             'needToBeAdmin' => false,
             'params' => ['id']
         ],
+        'project' => [
+            'file' => 'project.php',
+            'urlPath' => ['/project', '/projet'],
+            'path' => '/../app/views/project.php',
+            'route' => '/../views/layout.php',
+            'title' => 'Projets',
+            'method' => ['GET'],
+            'protected' => true,
+            'needToBeAdmin' => false,
+            'params' => []
+        ],
+        '/project/(\d+)' => [
+            'file' => 'project_detail.php',
+            'urlPath' => ['/project/(\d+)'],
+            'path' => '/../app/views/project_detail.php',
+            'route' => '/../views/layout.php',
+            'title' => 'Détails du projet',
+            'method' => ['GET'],
+            'protected' => true,
+            'needToBeAdmin' => false,
+            'params' => ['id']
+        ],
+        'project/create' => [
+            'file' => 'project_create.php',
+            'urlPath' => ['/project/create', '/projet/creer'],
+            'path' => '/../app/views/project_create.php',
+            'route' => '/../views/layout.php',
+            'title' => 'Créer un projet',
+            'method' => ['GET', 'POST'],
+            'protected' => true,
+            'needToBeAdmin' => false,
+            'params' => []
+        ],
+        'project/edit' => [
+            'file' => 'project_edit.php',
+            'urlPath' => ['/project/edit', '/projet/editer'],
+            'path' => '/../app/views/project_edit.php',
+            'route' => '/../views/layout.php',
+            'title' => 'Editer un projet',
+            'method' => ['GET', 'POST'],
+            'protected' => true,
+            'needToBeAdmin' => false,
+            'params' => []
+        ],
+        'project/delete/(\d+)' => [
+            'file' => 'project_delete.php',
+            'urlPath' => ['/project/delete/(\d+)'],
+            'path' => '/../app/views/project_delete.php',
+            'route' => '/../views/layout.php',
+            'title' => 'Supprimer un projet',
+            'method' => ['GET'],
+            'protected' => true,
+            'needToBeAdmin' => false,
+            'params' => ['id']
+        ],
         'dashboard' => [
             'file' => 'dashboard.php',
             'urlPath' => ['/dashboard'],

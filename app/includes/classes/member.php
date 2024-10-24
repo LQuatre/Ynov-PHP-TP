@@ -398,4 +398,51 @@ class Member
             }
         }
     }
+
+    public function newProject($user_id, $title, $description, $link): bool|string
+    {
+        // Insert the new project
+        $query = getPdo()->prepare("INSERT INTO projects (user_id, title, description, link) VALUES (:user_id, :title, :description, :link)");
+        $result = $query->execute([
+            ':user_id' => $user_id,
+            ':title' => $title,
+            ':description' => $description,
+            ':link' => $link
+        ]);
+        if ($result) {
+            return true;
+        } else {
+            return "Une erreur est survenue lors de la création du projet.";
+        }
+    }
+
+    public function handleNewProject($page, $member): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $user_id = $this->get('id');
+            $title = $_POST['title'] ?? '';
+            $description = $_POST['description'] ?? '';
+            $link = $_POST['link'] ?? '';
+
+            // Validate input
+            if (empty($user_id) || empty($title) || empty($description) || empty($link)) {
+                $error = "Veuillez remplir tous les champs correctement.";
+
+                return;
+            }
+
+            // Attempt to create the project
+            $result = $this->newProject($user_id, $title, $description, $link);
+
+            // Handle project creation result
+            if ($result === true) {
+                header('Location: /dashboard');
+                exit;
+            } else {
+                print_r($result);
+                $error = $result; // Le message d'erreur retourné par la méthode register
+                header('Location: /project/create?error=' . $error);
+            }
+        }
+    }
 }

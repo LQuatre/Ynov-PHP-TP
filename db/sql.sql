@@ -19,6 +19,23 @@
 CREATE DATABASE IF NOT EXISTS `cv_db` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_uca1400_ai_ci */;
 USE `cv_db`;
 
+    -- Listage de la structure de la table cv_db. users
+CREATE TABLE IF NOT EXISTS `users` (
+                                       `id` int(11) NOT NULL AUTO_INCREMENT,
+    `email` varchar(255) NOT NULL,
+    `username` varchar(50) NOT NULL,
+    `firstname` varchar(50) NOT NULL DEFAULT 'Prénom',
+    `lastname` varchar(50) NOT NULL DEFAULT 'Nom',
+    `password` varchar(255) NOT NULL,
+    `role` enum('admin','user') DEFAULT 'user',
+    PRIMARY KEY (`id`)
+    ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
+
+-- Listage des données de la table cv_db.users : ~2 rows (environ)
+INSERT INTO `users` (`id`, `email`, `username`, `firstname`, `lastname`, `password`, `role`) VALUES
+    (1, 'zabuz2005.zenvendark@gmail.com', 'LQuatre', 'Lucas', 'DIOT', '$2y$10$Fu1mIkzqGDAOd.NjOwpoGOaV8CHc.xLJ3f6KDuIEd5Z2Dh/4yVHWy', 'user');
+
+
 -- Listage de la structure de la table cv_db. cvs
 CREATE TABLE IF NOT EXISTS `cvs` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -31,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `cvs` (
   `skills` text NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
-  CONSTRAINT `cvs_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+    CONSTRAINT `cvs_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
 -- Listage des données de la table cv_db.cvs : ~0 rows (environ)
@@ -53,22 +70,6 @@ CREATE TABLE IF NOT EXISTS `projects` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
 -- Listage des données de la table cv_db.projects : ~0 rows (environ)
-
--- Listage de la structure de la table cv_db. users
-CREATE TABLE IF NOT EXISTS `users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `email` varchar(255) NOT NULL,
-  `username` varchar(50) NOT NULL,
-  `firstname` varchar(50) NOT NULL DEFAULT 'Prénom',
-  `lastname` varchar(50) NOT NULL DEFAULT 'Nom',
-  `password` varchar(255) NOT NULL,
-  `role` enum('admin','user') DEFAULT 'user',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
-
--- Listage des données de la table cv_db.users : ~2 rows (environ)
-INSERT INTO `users` (`id`, `email`, `username`, `firstname`, `lastname`, `password`, `role`) VALUES
-	(1, 'zabuz2005.zenvendark@gmail.com', 'LQuatre', 'Lucas', 'DIOT', '$2y$10$Fu1mIkzqGDAOd.NjOwpoGOaV8CHc.xLJ3f6KDuIEd5Z2Dh/4yVHWy', 'user');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
