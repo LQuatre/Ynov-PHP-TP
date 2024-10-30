@@ -15,12 +15,12 @@ $email = $member->get('email') ?: 'Not provided'; // Fallback if email not set
                 <div class="card bg-base-100 shadow-md p-4">
                     <h2 class="text-xl font-semibold">Profile</h2>
                     <p>Email: <?= htmlspecialchars($email) ?></p>
-                    <a href="/profile" class="btn btn-ghost mt-2">View Profile</a>
+                    <a href="/user/profile" class="btn btn-ghost mt-2">View Profile</a>
                 </div>
                 <div class="card bg-base-100 shadow-md p-4">
                     <h2 class="text-xl font-semibold">Recent Activity</h2>
                     <p>No recent activity found.</p>
-                    <a href="/activity" class="btn btn-ghost mt-2">View Activity</a>
+                    <a href="/user/activity" class="btn btn-ghost mt-2">View Activity</a>
                 </div>
                 <div class="card bg-base-100 shadow-md p-4">
                     <h2 class="text-xl font-semibold">CVs</h2>

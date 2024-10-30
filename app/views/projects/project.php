@@ -14,7 +14,7 @@ if (!$member->isLogged()) {
                     <?php foreach ($member->projects as $project) : ?>
                         <div class="card bg-base-100 shadow-md ">
                             <div class="card-body">
-                                <h2 class="text-lg font-bold"><?php echo $member->get('firstname') . ' project.php' . $member->get('lastname'); ?></h2>
+                                <h2 class="text-lg font-bold"><?php echo $member->get('firstname') . ' ' . $member->get('lastname'); ?></h2>
                                 <p class="text-sm"><?php echo $project['title']; ?></p>
                                 <p class="text-sm"><?php echo $project['description']; ?></p>
                                 <p class="text-sm"><?php echo $project['link']; ?></p>

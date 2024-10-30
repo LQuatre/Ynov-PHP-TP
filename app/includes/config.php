@@ -23,7 +23,7 @@ return [
         ],
         'login' => [
             'file' => 'login.php',
-            'urlPath' => ['/login', '/connexion'],
+            'urlPath' => ['/login', '/connexion', '/user/login', '/user/connexion'],
             'path' => '/../views/user/login.php',
             'route' => '/../views/layout.php',
             'title' => 'Connexion',
@@ -34,7 +34,7 @@ return [
         ],
         'logout' => [
             'file' => 'logout.php',
-            'urlPath' => ['/logout', '/deconnexion'],
+            'urlPath' => ['/logout', '/deconnexion', '/user/logout', '/user/deconnexion'],
             'path' => '/../views/user/logout.php',
             'route' => '/../views/user/logout.php',
             'title' => 'Déconnexion',
@@ -45,12 +45,56 @@ return [
         ],
         'register' => [
             'file' => 'signup.php',
-            'urlPath' => ['/signup', '/inscription'],
+            'urlPath' => ['/signup', '/inscription', '/user/signup', '/user/inscription'],
             'path' => '/../views/user/signup.php',
             'route' => '/../views/layout.php',
             'title' => 'Inscription',
             'method' => ['GET', 'POST'],
             'protected' => false,
+            'needToBeAdmin' => false,
+            'params' => []
+        ],
+        'dashboard' => [
+            'file' => 'dashboard.php',
+            'urlPath' => ['/user/dashboard'],
+            'path' => '/../views/user/dashboard.php',
+            'route' => '/../views/layout.php',
+            'title' => 'Tableau de bord',
+            'method' => ['GET', 'POST'],
+            'protected' => true,
+            'needToBeAdmin' => false,
+            'params' => []
+        ],
+        'profile' => [
+            'file' => 'profile.php',
+            'urlPath' => ['/user/profile'],
+            'path' => '/../views/user/profile.php',
+            'route' => '/../views/layout.php',
+            'title' => 'Profil',
+            'method' => ['GET'],
+            'protected' => true,
+            'needToBeAdmin' => false,
+            'params' => []
+        ],
+        'settings' => [
+            'file' => 'settings.php',
+            'urlPath' => ['/user/settings', '/users/parametres'],
+            'path' => '/../views/user/settings.php',
+            'route' => '/../views/layout.php',
+            'title' => 'Paramètres',
+            'method' => ['GET', 'POST'],
+            'protected' => true,
+            'needToBeAdmin' => false,
+            'params' => []
+        ],
+        'activity' => [
+            'file' => 'activity.php',
+            'urlPath' => ['/user/activity', '/user/activite'],
+            'path' => '/../views/user/activity.php',
+            'route' => '/../views/layout.php',
+            'title' => 'Activité',
+            'method' => ['GET'],
+            'protected' => true,
             'needToBeAdmin' => false,
             'params' => []
         ],
@@ -174,50 +218,6 @@ return [
             'protected' => true,
             'needToBeAdmin' => false,
             'params' => ['id']
-        ],
-        'dashboard' => [
-            'file' => 'dashboard.php',
-            'urlPath' => ['/dashboard'],
-            'path' => '/../views/user/dashboard.php',
-            'route' => '/../views/layout.php',
-            'title' => 'Tableau de bord',
-            'method' => ['GET'],
-            'protected' => true,
-            'needToBeAdmin' => false,
-            'params' => []
-        ],
-        'profile' => [
-            'file' => 'profile.php',
-            'urlPath' => ['/profile'],
-            'path' => '/../views/user/profile.php',
-            'route' => '/../views/layout.php',
-            'title' => 'Profil',
-            'method' => ['GET'],
-            'protected' => true,
-            'needToBeAdmin' => false,
-            'params' => []
-        ],
-        'settings' => [
-            'file' => 'settings.php',
-            'urlPath' => ['/settings', '/parametres'],
-            'path' => '/../views/user/settings.php',
-            'route' => '/../views/layout.php',
-            'title' => 'Paramètres',
-            'method' => ['GET', 'POST'],
-            'protected' => true,
-            'needToBeAdmin' => false,
-            'params' => []
-        ],
-        'activity' => [
-            'file' => 'activity.php',
-            'urlPath' => ['/activity', '/activite'],
-            'path' => '/../views/user/activity.php',
-            'route' => '/../views/layout.php',
-            'title' => 'Activité',
-            'method' => ['GET'],
-            'protected' => true,
-            'needToBeAdmin' => false,
-            'params' => []
         ],
         'about' => [
             'file' => 'about.php',

@@ -332,7 +332,7 @@ class Member
 
             // Handle login result
             if ($result === true) {
-                header('Location: /dashboard');
+                header('Location: /user/dashboard');
                 exit;
             } else {
                 $error = $result; // Le message d'erreur retourné par la méthode register
@@ -398,7 +398,7 @@ class Member
 
             // Handle CV creation result
             if ($result === true) {
-                header('Location: /dashboard');
+                header('Location: /user/dashboard');
                 exit;
             } else {
                 print_r($result);
@@ -445,7 +445,7 @@ class Member
 
             // Handle project creation result
             if ($result === true) {
-                header('Location: /dashboard');
+                header('Location: /user/dashboard');
                 exit;
             } else {
                 print_r($result);

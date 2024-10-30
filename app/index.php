@@ -23,10 +23,6 @@
     // Configure le gestionnaire 404 personnalisé
     configure404Handler($router);
 
-    $router->before('GET', '/.*', function () {
-        header('X-Powered-By: bramus/router');
-    });
-
     // Configure le routeur avec les pages de la configuration
     configureRouter($router);
 

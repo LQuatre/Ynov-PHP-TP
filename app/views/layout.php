@@ -18,7 +18,7 @@ $theme = isset($_COOKIE['theme']) ? $_COOKIE['theme'] : 'light'; // Récupérer 
                 <!-- Dropdown for mobile (hidden on larger screens) -->
                 <div class="lg:hidden">
                     <div class="dropdown">
-<div tabindex="0" role="button" class="btn btn-ghost btn-circle">
+                        <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             class="h-5 w-5"
@@ -65,8 +65,8 @@ $theme = isset($_COOKIE['theme']) ? $_COOKIE['theme'] : 'light'; // Récupérer 
                     </div>
                     <div>
                         <?php if ($member->isLogged()): ?>
-                            <a href="/dashboard" class="btn btn-ghost">Dashboard</a>
-                            <a href="/logout" class="btn btn-ghost">Logout</a>
+                            <a href="/user/dashboard" class="btn btn-ghost">Dashboard</a>
+                            <a href="/user/logout" class="btn btn-ghost">Logout</a>
                         <?php else: ?>
                             <a href="/login" class="btn btn-ghost">Login</a>
                             <a href="/signup" class="btn btn-ghost">SignUp</a>

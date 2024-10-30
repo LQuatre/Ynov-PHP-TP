@@ -80,7 +80,11 @@ function pageGetCurrent(): array {
     $URI = $_SERVER['REQUEST_URI'];
     $URI = explode('/', filter_var($URI, FILTER_SANITIZE_URL));
 
-    $page = '/' . ($URI[1] ?? $default);
+//    print_r($URI);
+
+    $page = '/' . implode('/', array_slice($URI, 1)) ?: $default;
+
+//    print_r($page);
 
     foreach ($pages as $key => $value) {
         if (in_array($page, $value['urlPath'])) {
@@ -166,12 +170,12 @@ $thispage = pageGetCurrent();
 // Redirect to login if the page is protected and the user is not logged in
 if ($thispage['protected'] === true && !$member->isLogged()) {
     header('Location: /login');
-//    exit;
+    exit;
 }
 
 if ($thispage['needToBeAdmin'] === true && !$member->isAdmin()) {
     header('Location: /rickroll');
-}   
+}
 
 // Set the page title
 $page_title = $thispage['title'];
