@@ -24,7 +24,10 @@ if (!$member->isLogged()) {
                                         <input type="hidden" name="cv_id" value="<?php echo $cv['id']; ?>">
                                         <button type="submit" class="btn btn-outline">Download PDF</button>
                                     </form>
-                                    <a href="/cv/delete/<?php echo $cv['id']; ?>" class="btn btn-ghost">Supprimer</a>
+                                    <form method="POST" action="/cv/delete">
+                                        <input type="hidden" name="cv_id" value="<?php echo $cv['id']; ?>">
+                                        <button type="submit" class="btn btn-ghost">Supprimer</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>

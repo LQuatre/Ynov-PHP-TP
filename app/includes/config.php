@@ -153,16 +153,16 @@ return [
             'needToBeAdmin' => false,
             'params' => []
         ],
-        'cv/delete/(\d+)' => [
+        'cv/delete/' => [
             'file' => 'cv_delete.php',
-            'urlPath' => ['/cv/delete/(\d+)'],
+            'urlPath' => ['/cv/delete/'],
             'path' => '/../views/cv/cv_delete.php',
             'route' => '/../views/layout.php',
             'title' => 'Supprimer un CV',
-            'method' => ['GET'],
+            'method' => ['GET', 'POST'],
             'protected' => true,
             'needToBeAdmin' => false,
-            'params' => ['id']
+            'params' => []
         ],
         'project' => [
             'file' => 'project.php',
@@ -208,16 +208,16 @@ return [
             'needToBeAdmin' => false,
             'params' => []
         ],
-        'project/delete/(\d+)' => [
+        'project/delete' => [
             'file' => 'project_delete.php',
-            'urlPath' => ['/project/delete/(\d+)'],
+            'urlPath' => ['/project/delete'],
             'path' => '/../views/projects/project_delete.php',
             'route' => '/../views/layout.php',
             'title' => 'Supprimer un projet',
-            'method' => ['GET'],
+            'method' => ['GET', 'POST'],
             'protected' => true,
             'needToBeAdmin' => false,
-            'params' => ['id']
+            'params' => []
         ],
         'about' => [
             'file' => 'about.php',

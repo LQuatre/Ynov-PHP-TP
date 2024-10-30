@@ -20,7 +20,10 @@ if (!$member->isLogged()) {
                                 <p class="text-sm"><?php echo $project['link']; ?></p>
                                 <p class="text-sm"><?php echo $project['image']; ?></p>
                                 <div class="flex justify-end space-x-4">
-                                    <a href="/project/delete/<?php echo $project['id']; ?>" class="btn btn-ghost">Supprimer</a>
+                                    <form method="POST" action="/project/delete">
+                                        <input type="hidden" name="project_id" value="<?php echo $project['id']; ?>">
+                                        <button type="submit" class="btn btn-ghost">Supprimer</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>

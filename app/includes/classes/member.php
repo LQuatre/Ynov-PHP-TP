@@ -2,6 +2,8 @@
 
 namespace class;
 
+use PDO;
+
 /**
  * Cette classe va nous permettre de gérer la connexion d'un membre,
  * de vérifier la session et les cookies et enfin
@@ -36,6 +38,15 @@ class Member
      * @var array
      */
     private $member = [];
+
+    /**
+     * Activities of the member
+     *
+     * @var array
+     */
+    private $activities = [];
+
+
 
     public mixed $cvs;
     public mixed $projects;
@@ -94,6 +105,7 @@ class Member
             'lastname' => $lastname,
             'id' => $this->get('id')
         ]);
+        $this->addActivity('Mise à jour du profil');
     }
 
     /**
@@ -279,6 +291,7 @@ class Member
                 $result = $this->register($email, $username, $password);
                 if ($result === true) {
                     // Redirection vers la page de connexion ou accueil
+                    $this->addActivity('Inscription');
                     header('Location: /login');
                     exit;
                 } else {
@@ -312,6 +325,8 @@ class Member
         // Créer les cookies de connexion automatique
         self::createCookie($member);
 
+        $this->addActivity('Création de session et cookies de connexion automatique');
+
         return true;
     }
     public function handleLogin($page, $member)
@@ -332,6 +347,7 @@ class Member
 
             // Handle login result
             if ($result === true) {
+                $this->addActivity('Connexion');
                 header('Location: /user/dashboard');
                 exit;
             } else {
@@ -351,6 +367,7 @@ class Member
         session_destroy();
 
         // Redirect to the login page
+        $this->addActivity('Déconnexion');
         header('Location: /home');
         exit;
     }
@@ -398,6 +415,7 @@ class Member
 
             // Handle CV creation result
             if ($result === true) {
+                $this->addActivity('Création d\'un CV');
                 header('Location: /user/dashboard');
                 exit;
             } else {
@@ -445,6 +463,7 @@ class Member
 
             // Handle project creation result
             if ($result === true) {
+                $this->addActivity('Création d\'un nouveau projet : ' . $title);
                 header('Location: /user/dashboard');
                 exit;
             } else {
@@ -453,5 +472,21 @@ class Member
                 header('Location: /project/create?error=' . $error);
             }
         }
+    }
+
+    public function addActivity(string $activity): void
+    {
+        $query = getPdo()->prepare('INSERT INTO activities (user_id, activity) VALUES (:user_id, :activity)');
+        $query->execute([
+            'user_id' => $this->get('id'),
+            'activity' => $activity
+        ]);
+    }
+
+    public function getActivities(): array
+    {
+        $query = getPdo()->prepare('SELECT activity FROM activities WHERE user_id = :user_id ORDER BY created_at DESC');
+        $query->execute(['user_id' => $this->get('id')]);
+        return $query->fetchAll(PDO::FETCH_COLUMN);
     }
 }
