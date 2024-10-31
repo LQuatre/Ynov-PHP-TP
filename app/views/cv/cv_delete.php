@@ -1,35 +1,36 @@
 <?php
-// /cv/delete/(\d+)
 
-if (!$member->isLogged()) {
-    echo "<script>'=window.location.href = '/login';</script>";
-    exit;
-}
-
-if (isset($page[2])) {
-    $id = $page[2];
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cv_id'])) {
+    $id = $_POST['cv_id'];
+    echo $id;
     $pdo = getPdo();
     $query = $pdo->prepare('SELECT * FROM cvs WHERE id = :id');
     $query->execute(['id' => $id]);
     $cv = $query->fetch();
 
-    if (!$member->isLogged() || $member->get('id') !== $cv['member_id']) {
-        echo "<script>window.location.href = '/cv/';</script>";
-        exit;
-    }
-
-    if (!$cv) {
-        echo "<script>window.location.href = '/home';</script>";
+    try {
+        if (!$member->isLogged() || $member->get('id') !== $cv['user_id ']) {
+            echo "<script>window.location.href = '/cv/';</script>";
+            exit;
+        }
+        if (!$cv) {
+            echo "<script>window.location.href = '/home';</script>";
+            exit;
+        }
+    } catch (Exception $e) {
+        error_log('Something went wrong: ' . $e->getMessage());
+        header('Location: /home');
         exit;
     }
 
     $query = $pdo->prepare('DELETE FROM cvs WHERE id = :id');
-    $query->execute(['id' => $id]);
+        $query->execute(['id' => $id]);
 
     echo "<script>window.location.href = '/cv/';</script>";
     exit;
 }
 
 echo "<script>window.location.href = '/cv/';</script>";
+exit;
 
 ?>

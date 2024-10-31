@@ -62,12 +62,21 @@ CREATE TABLE IF NOT EXISTS `projects` (
   `title` varchar(100) DEFAULT NULL,
   `description` text DEFAULT NULL,
   `image` varchar(255) DEFAULT NULL,
+  `link` varchar(255) DEFAULT NULL,
   `is_favorite` tinyint(1) DEFAULT 0,
   `is_validated` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `projects_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
+
+CREATE TABLE activities (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    activity VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
 
 -- Listage des données de la table cv_db.projects : ~0 rows (environ)
 
