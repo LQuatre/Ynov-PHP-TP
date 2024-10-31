@@ -30,9 +30,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link href="https://cdn.jsdelivr.net/npm/daisyui@latest/dist/full.css" rel="stylesheet">
 </head>
 <body>
-    <div class="hero bg-base-200 min-h-screen">
+<div class="bg-base-200 min-h-screen pt-12 flex items-start justify-center">
         <!-- Affiché seulement sur desktop (taille md et plus) -->
-        <div class="hidden md:block">
+        <div class="hidden md:block mb">
             <div class="hero-content text-center">
                 <div class="container mx-auto p-4">
                     <h1 class="text-2xl font-bold mb-4">Contact</h1>

@@ -4,6 +4,10 @@ namespace class;
 
 use PDO;
 
+require('/app/fpdf/fpdf.php');
+
+use FPDF;
+
 /**
  * Cette classe va nous permettre de gérer la connexion d'un membre,
  * de vérifier la session et les cookies et enfin
@@ -488,5 +492,57 @@ class Member
         $query = getPdo()->prepare('SELECT activity FROM activities WHERE user_id = :user_id ORDER BY created_at DESC');
         $query->execute(['user_id' => $this->get('id')]);
         return $query->fetchAll(PDO::FETCH_COLUMN);
+    }
+
+    public function generatePdf($cv): void
+    {
+        // Create a new PDF instance
+        $pdf = new FPDF();
+        $pdf->AddPage();
+
+// Set title
+        $pdf->SetFont('Arial', 'B', 18);
+        $pdf->Cell(0, 10, 'Curriculum Vitae', 0, 1, 'C');
+        $pdf->Ln(5);
+
+// Add Name Section
+        $pdf->SetFont('Arial', 'B', 14);
+        $pdf->Cell(0, 10, 'Personal Information', 0, 1);
+        $pdf->Ln(2);
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->Cell(0, 8, 'Firstname: ' . $this->get('firstname'), 0, 1);
+        $pdf->Cell(0, 8, 'Lastname: ' . $this->get('lastname'), 0, 1);
+        $pdf->Cell(0, 8, 'Email: ' . $cv['email'], 0, 1);
+        $pdf->Cell(0, 8, 'Phone: ' . $cv['phone'], 0, 1);
+        $pdf->Cell(0, 8, 'Address: ' . $cv['address'], 0, 1);
+        $pdf->Ln(5);
+
+// Add Education Section
+        $pdf->SetFont('Arial', 'B', 14);
+        $pdf->Cell(0, 10, 'Education', 0, 1);
+        $pdf->Ln(2);
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->MultiCell(0, 8, $cv['education']);
+        $pdf->Ln(5);
+
+// Add Experience Section
+        $pdf->SetFont('Arial', 'B', 14);
+        $pdf->Cell(0, 10, 'Professional Experience', 0, 1);
+        $pdf->Ln(2);
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->MultiCell(0, 8, $cv['experience']);
+        $pdf->Ln(5);
+
+// Add Skills Section
+        $pdf->SetFont('Arial', 'B', 14);
+        $pdf->Cell(0, 10, 'Skills', 0, 1);
+        $pdf->Ln(2);
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->MultiCell(0, 8, $cv['skills']);
+        $pdf->Ln(5);
+
+// Output the PDF
+        $fullname = $this->get('firstname') . '_' . $this->get('lastname') . '_CV_' . $cv['id'];
+        $pdf->Output('D', $fullname . '.pdf');
     }
 }

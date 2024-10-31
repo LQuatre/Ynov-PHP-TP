@@ -15,15 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cv_id'])) {
 
     if ($cv) {
         try {
-            $pdfContent = $pdfController->generatePdf($cv, $member);
-            
-            // Set headers to force download
-            header('Content-Type: application/pdf');
-            header('Content-Disposition: attachment; filename="cv_' . $cvId . '.pdf"');
-            header('Content-Length: ' . strlen($pdfContent));
-            
-            // Output the PDF content
-            echo $pdfContent;
+            $member->generatePdf($cv);
             exit;
         } catch (Exception $e) {
             error_log('PDF generation failed: ' . $e->getMessage());

@@ -1,8 +1,6 @@
 <?php
-require('/app/includes/classes/pdfcontroller.php');
 
 // Start PHP session
-use class\FPDFController;
 use class\Member;
 
 session_start();
@@ -130,11 +128,10 @@ function deleteMember($id) {
 function configureRouter(\src\Router\Router $router): void {
     $config = getConfig();
     $member = new Member();
-    $pdfController = new FPDFController();
     foreach ($config['views'] as $page) {
         foreach ($page['urlPath'] as $path) {
             if (in_array('GET', $page['method'])) {
-                $router->get($path, function ($id = null) use ($page, $member, $pdfController) {
+                $router->get($path, function ($id = null) use ($page, $member) {
                     $page_title = $page['title'];
                     if (!empty($page['params'])) {
                         foreach ($page['params'] as $param) {
@@ -145,7 +142,7 @@ function configureRouter(\src\Router\Router $router): void {
                 });
             }
             if (in_array('POST', $page['method'])) {
-                $router->post($path, function () use ($page, $member, $pdfController) {
+                $router->post($path, function () use ($page, $member) {
                     require_once __DIR__ . $page['path'];
                 });
             }
